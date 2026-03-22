@@ -26,8 +26,8 @@ useScrollReveal()
     <AppStats />
     <AppServices />
     <AppProcess />
-    <AppAbout />
-    <AppPricing />
+    <!-- <AppAbout /> -->
+    <!-- <AppPricing /> -->
     <AppTestimonials />
     <AppCta />
   </main>
