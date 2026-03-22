@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+@import './variables.css';
+@import './animations.css';
+@import './cursor.css';
+@import './syntax.css';
+
+@theme {
+  --color-yellow: #f5c400;
+  --color-gray-base: #1e1e1e;
+  --color-gray-mid: #2d2d2d;
+  --color-gray-lt: #3a3a3a;
+  --color-black-deep: #0a0a0a;
+  --color-text-main: #d4d4d4;
+  --color-text-dim: #888888;
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --font-size-hero: clamp(3rem, 7vw, 7rem);
+  --font-size-section: clamp(2.2rem, 5vw, 4rem);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-gray-base);
+  color: var(--color-text-main);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}

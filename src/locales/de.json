@@ -1,0 +1,190 @@
+{
+  "nav": {
+    "services": "Leistungen",
+    "process": "Prozess",
+    "about": "Über mich",
+    "pricing": "Angebot",
+    "contact": "Kontakt",
+    "cta": "Projektangebot",
+    "open_menu": "Menü öffnen",
+    "close_menu": "Menü schließen",
+    "nav_aria_label": "Navigationsmenü"
+  },
+  "hero": {
+    "badge": "Freelancer B2B · PHP-Spezialist",
+    "title_1": "CODE DER",
+    "title_2": "FÜR SIE",
+    "title_3": "VERDIENT",
+    "description": "Ich erstelle fortschrittliche Webanwendungen und E-Commerce-Shops. Ich spezialisiere mich auf PHP, Laravel, WordPress/WooCommerce und React — schnell, solide und mit Geschäftsverständnis.",
+    "cta_talk": "Über das Projekt sprechen",
+    "cta_services": "Leistungen ansehen ↓",
+    "code_comment": "// Dagsosoft · PHP Expert",
+    "code_deliver": "liefern",
+    "code_quality": "qualität",
+    "code_onTime": "pünktlich",
+    "code_withinBudget": "imBudget"
+  },
+  "stats": {
+    "experience": "Jahre Erfahrung",
+    "projects": "Abgeschlossene Projekte",
+    "clients": "Zufriedene Kunden",
+    "b2b": "USt-Rechnung / B2B-Vertrag"
+  },
+  "services": {
+    "badge": "Spezialisierungen",
+    "title_1": "WAS ICH",
+    "title_2": "FÜR SIE",
+    "title_3": "TUE",
+    "items": {
+      "wp": {
+        "title": "WordPress & WooCommerce",
+        "desc": "Fortgeschrittene E-Commerce-Shops, eigene Plugins, Zahlungsintegrationen und ERP-Systeme. Leistung und Sicherheit stehen an erster Stelle."
+      },
+      "php": {
+        "title": "PHP Backend",
+        "desc": "Solides, skalierbares Backend in reinem PHP oder unter Verwendung von Frameworks. APIs, Managementsysteme, Automatisierung von Geschäftsprozessen."
+      },
+      "laravel": {
+        "title": "Laravel",
+        "desc": "SaaS-Anwendungen, Admin-Panels, Buchungssysteme und Marktplätze — gebaut mit Laravel mit Blick auf Skalierbarkeit und Wartbarkeit."
+      },
+      "frontend": {
+        "title": "React & Vue",
+        "desc": "Moderne SPAs, Dashboards und Benutzeroberflächen integriert in das PHP-Backend. Schnell, responsiv und barrierefrei."
+      }
+    }
+  },
+  "process": {
+    "badge": "Wie ich arbeite",
+    "title_1": "EINFACHER",
+    "title_2": "PROZESS",
+    "title_3": "OHNE ÜBERRASCHUNGEN",
+    "steps": {
+      "brief": {
+        "title": "Gespräch & Briefing",
+        "desc": "Kostenloses 30-minütiges Treffen zur Festlegung von Projektumfang, Zeitplan und Budget."
+      },
+      "contract": {
+        "title": "Angebot & Vertrag",
+        "desc": "Detailliertes Angebot und B2B-Vertrag mit klar definierten Meilensteinen."
+      },
+      "dev": {
+        "title": "Entwicklung",
+        "desc": "Iterative Arbeit mit regelmäßigen Updates und Zugriff auf eine Testumgebung."
+      },
+      "launch": {
+        "title": "Launch & Support",
+        "desc": "Bereitstellung auf dem Produktionsserver und 30 Tage Support nach dem Start ohne zusätzliche Kosten."
+      }
+    }
+  },
+  "about": {
+    "badge": "Über mich",
+    "title_1": "FREELANCER",
+    "title_2": "MIT BUSINESS",
+    "title_3": "MINDSET",
+    "desc_1": "Ich bin ein unabhängiger PHP-Entwickler mit über 8 Jahren Erfahrung in der Erstellung von E-Commerce-Lösungen und Webanwendungen für Kunden in ganz Europa.",
+    "desc_2": "Ich arbeite ausschließlich im B2B-Modell — ich erstelle Rechnungen mit ausgewiesener MwSt., unterzeichne Verträge und behandle jedes Projekt wie mein eigenes Geschäft.",
+    "perks": [
+      "Kommunikation in Polnisch und Englisch",
+      "Flexible Arbeitszeiten, inklusive Remote-Zusammenarbeit",
+      "Kenntnis der europäischen E-Commerce-Realitäten",
+      "Code-Review und Optimierung bestehender Projekte",
+      "Wartung und Ausbau von Legacy-Code"
+    ],
+    "tech_stack": "Technologie-Level",
+    "availability_title": "Verfügbarkeit",
+    "avail_full": "Festes Projekt (Vollzeit)",
+    "avail_once": "Einmalige Projekte"
+  },
+  "testimonials": {
+    "badge": "Bewertungen",
+    "title_1": "WAS",
+    "title_2": "KUNDEN SAGEN",
+    "items": {
+      "marek": {
+        "quote": "Zusammenarbeit auf höchstem Niveau. WooCommerce-Shop vor dem Termin fertig, sauberer und gut dokumentierter Code. Ich empfehle ihn jedem, der einen soliden B2B-PHP-Entwickler sucht.",
+        "role": "CEO · e-commerce PL"
+      },
+      "anna": {
+        "quote": "Laravel-Anwendung in 6 Wochen von Grund auf neu gebaut. Tolle Kommunikation, faire Preise, keine Überraschungen. Wir arbeiten weiter zusammen.",
+        "role": "CTO · SaaS startup"
+      },
+      "piotr": {
+        "quote": "Migration eines Legacy-PHP-Systems zu Laravel — reibungslos, keine Ausfallzeiten. Das Code-Review zeigte Probleme auf, von denen wir nichts wussten. Sehr kompetenter Ansatz.",
+        "role": "Head of Dev · digital agency"
+      }
+    }
+  },
+  "contact": {
+    "title_1": "LASSEN SIE UNS EIN",
+    "title_2": "PROJEKT STARTEN",
+    "description": "Beschreiben Sie Ihr Projekt — ich antworte innerhalb von 24 Stunden mit einer ersten Einschätzung von Umfang und Budget. Kostenlos.",
+    "form": {
+      "name": "Vor- und Nachname",
+      "email": "E-Mail-Adresse",
+      "message": "Projekt beschreiben...",
+      "send": "Projekt-Briefing senden",
+      "sending": "Wird gesendet...",
+      "success": "✓ Nachricht gesendet! Ich melde mich innerhalb von 24 Stunden.",
+      "error": "✗ Ein Fehler ist aufgetreten. Bitte schreiben Sie direkt an kontakt@dagsosoft.pl"
+    },
+    "call": "30-minütiges Gespräch planen"
+  },
+  "pricing": {
+    "badge": "Angebot",
+    "title_1": "TRANSPARENTE",
+    "title_2": "PREISE",
+    "description": "Wählen Sie ein Kooperationsmodell, das zu Ihren Bedürfnissen passt",
+    "cards": {
+      "hourly": {
+        "title": "Fester Auftrag",
+        "amount": "150",
+        "unit": " PLN/Std",
+        "period": "Minimum 20 Std / Monat",
+        "features": [
+          "Dedizierte monatliche Stunden",
+          "Priorisierte Bearbeitung",
+          "Wöchentliche Stundenberichte",
+          "USt-Rechnung",
+          "B2B-Vertrag"
+        ],
+        "cta": "Nach Details fragen"
+      },
+      "fixed": {
+        "title": "Festpreis",
+        "badge": "Beliebt",
+        "amount": "ab 3k",
+        "unit": " PLN",
+        "period": "Individuelles Projektangebot",
+        "features": [
+          "Festpreis ohne Überraschungen",
+          "Meilensteine und Teilzahlungen",
+          "Testumgebung",
+          "30 Tage kostenloser Support",
+          "Vollständiger Quellcode",
+          "USt-Rechnung + Vertrag"
+        ],
+        "cta": "Kostenloses Angebot →"
+      },
+      "audit": {
+        "title": "Code Review",
+        "amount": "500",
+        "unit": " PLN",
+        "period": "Einmalig / Projekt",
+        "features": [
+          "Sicherheitsaudit",
+          "Performance-Analyse",
+          "Bericht mit Empfehlungen",
+          "1 Std Beratung inklusive",
+          "USt-Rechnung"
+        ],
+        "cta": "Audit bestellen"
+      }
+    }
+  },
+  "footer": {
+    "description": "© 2025 Dagsosoft · Freelancer PHP B2B",
+    "privacy": "Datenschutz-Bestimmungen"
+  }
+}

@@ -1,0 +1,22 @@
+.c-kw  { color: #c792ea; }
+.c-fn  { color: #82aaff; }
+.c-str { color: var(--yellow); }
+.c-cm  { color: #546e7a; font-style: italic; }
+.c-wt  { color: #eeffff; }
+.c-op  { color: #89ddff; }
+
+.code-num {
+  color: #444;
+  width: 1.4rem;
+  margin-right: 1rem;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.testi-quote::before {
+  content: '"';
+  color: var(--yellow);
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+}
+

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dagsosoft – PHP & Web Development B2B</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gray:    #1e1e1e;
+    --black:   #0a0a0a;
+    --yellow:  #f5c400;
+    --gray-mid:#2d2d2d;
+    --gray-lt: #3a3a3a;
+    --text:    #d4d4d4;
+    --text-dim:#888;
+    --nav-h:   66px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--gray); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+  /* CURSOR */
+  .cursor,.cursor-ring{display:none}
+  @media(pointer:fine){
+    .cursor{display:block;width:10px;height:10px;border-radius:50%;background:var(--yellow);position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:width .2s,height .2s,transform .15s}
+    .cursor-ring{display:block;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--yellow);position:fixed;top:0;left:0;pointer-events:none;z-index:9998;opacity:.55;transition:transform .3s}
+  }
+
+  /* NAV */
+  nav{position:fixed;top:0;width:100%;z-index:900;background:rgba(10,10,10,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--gray-lt);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:var(--nav-h)}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.12em;color:#fff;z-index:1001;flex-shrink:0}
+  .logo span{color:var(--yellow)}
+  .nav-links{display:flex;gap:2.2rem;list-style:none}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;transition:color .2s}
+  .nav-links a:hover{color:var(--yellow)}
+  .nav-cta{background:var(--yellow);color:var(--black);border:none;padding:.55rem 1.3rem;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s;flex-shrink:0}
+  .nav-cta:hover{background:#ffd62e;transform:translateY(-1px)}
+
+  /* HAMBURGER */
+  .hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:1px solid var(--gray-lt);cursor:pointer;z-index:1001;padding:8px;transition:border-color .2s}
+  .hamburger:hover{border-color:var(--yellow)}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform .32s cubic-bezier(.4,0,.2,1),opacity .2s,background .2s}
+  .hamburger:hover span{background:var(--yellow)}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  /* MOBILE MENU */
+  .mobile-menu{position:fixed;inset:0;background:var(--black);z-index:1000;flex-direction:column;align-items:stretch;justify-content:center;opacity:0;transform:translateX(100%);transition:opacity .35s ease,transform .38s cubic-bezier(.4,0,.2,1);display:none;padding:0 0 2rem}
+  .mobile-menu.open{opacity:1;transform:translateX(0)}
+  .mobile-menu-inner{display:flex;flex-direction:column;height:100%;justify-content:center;padding-top:var(--nav-h)}
+  .mobile-menu ul{list-style:none;display:flex;flex-direction:column}
+  .mobile-menu ul li{border-bottom:1px solid var(--gray-lt);opacity:0;transform:translateX(30px);transition:opacity .3s ease,transform .3s ease}
+  .mobile-menu.open ul li{opacity:1;transform:translateX(0)}
+  .mobile-menu.open ul li:nth-child(1){transition-delay:.06s}
+  .mobile-menu.open ul li:nth-child(2){transition-delay:.12s}
+  .mobile-menu.open ul li:nth-child(3){transition-delay:.18s}
+  .mobile-menu.open ul li:nth-child(4){transition-delay:.24s}
+  .mobile-menu.open ul li:nth-child(5){transition-delay:.3s}
+  .mobile-menu ul li a{display:flex;align-items:center;justify-content:space-between;padding:1.15rem 6%;color:var(--text);text-decoration:none;font-size:1.1rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:color .2s,background .2s}
+  .mobile-menu ul li a:hover{color:var(--yellow);background:rgba(245,196,0,.04)}
+  .mobile-menu ul li a::after{content:'→';color:var(--yellow);font-size:.9rem;flex-shrink:0}
+  .mobile-menu-bottom{padding:2rem 6% 0;display:flex;flex-direction:column;gap:1rem;opacity:0;transform:translateY(16px);transition:opacity .3s .34s ease,transform .3s .34s ease}
+  .mobile-menu.open .mobile-menu-bottom{opacity:1;transform:translateY(0)}
+  .mobile-menu-bottom .btn-primary{width:100%;text-align:center;padding:1rem;font-size:.95rem}
+  .mobile-badge{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--text-dim);letter-spacing:.15em;text-align:center}
+  .menu-close{position:absolute;top:calc(var(--nav-h)/2 - 18px);right:5%;width:36px;height:36px;background:none;border:1px solid var(--gray-lt);color:var(--text);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s,transform .25s;z-index:1002;opacity:0;transform:rotate(-90deg);pointer-events:none}
+  .mobile-menu.open .menu-close{opacity:1;transform:rotate(0deg);pointer-events:auto;transition:opacity .3s .2s ease,transform .3s .2s ease,border-color .2s,color .2s}
+  .menu-close:hover{border-color:var(--yellow);color:var(--yellow)}
+  body.menu-open{overflow:hidden}
+
+  /* HERO */
+  .hero{min-height:100vh;background:var(--black);display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:120px 5% 80px;position:relative;overflow:hidden;gap:3rem}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(245,196,0,.06) 0%,transparent 70%),repeating-linear-gradient(0deg,transparent,transparent 49px,rgba(255,255,255,.025) 49px,rgba(255,255,255,.025) 50px),repeating-linear-gradient(90deg,transparent,transparent 49px,rgba(255,255,255,.025) 49px,rgba(255,255,255,.025) 50px);pointer-events:none}
+  .hero-text{position:relative;z-index:2}
+  .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,196,0,.1);border:1px solid rgba(245,196,0,.3);color:var(--yellow);font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;padding:.4rem .9rem;margin-bottom:2rem;animation:fadeUp .7s ease both}
+  .hero-tag::before{content:'▶';font-size:.5rem}
+  h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,7rem);line-height:.95;color:#fff;letter-spacing:.03em;animation:fadeUp .7s .1s ease both}
+  h1 .accent{color:var(--yellow)}
+  h1 .outline{-webkit-text-stroke:1.5px rgba(255,255,255,.3);color:transparent}
+  .hero-sub{margin-top:1.6rem;font-size:1.05rem;color:var(--text-dim);max-width:480px;line-height:1.75;animation:fadeUp .7s .2s ease both}
+  .hero-actions{margin-top:2.4rem;display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp .7s .3s ease both}
+  .btn-primary{background:var(--yellow);color:var(--black);border:none;padding:.85rem 2rem;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s}
+  .btn-primary:hover{background:#ffd62e;transform:translateY(-2px);box-shadow:0 8px 30px rgba(245,196,0,.25)}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--gray-lt);padding:.85rem 2rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s,transform .15s}
+  .btn-ghost:hover{border-color:var(--yellow);color:var(--yellow);transform:translateY(-2px)}
+  .hero-visual{position:relative;z-index:2;display:flex;justify-content:flex-end;animation:fadeUp .7s .25s ease both}
+  .code-card{background:var(--gray-mid);border:1px solid var(--gray-lt);border-top:3px solid var(--yellow);padding:1.8rem 2rem;width:100%;max-width:420px;position:relative;font-family:'Space Mono',monospace;font-size:.78rem;line-height:2}
+  .code-bar{display:flex;gap:.45rem;position:absolute;top:1rem;left:1.2rem}
+  .code-bar span{width:9px;height:9px;border-radius:50%}
+  .code-bar span:nth-child(1){background:#ff5f56}
+  .code-bar span:nth-child(2){background:#ffbd2e}
+  .code-bar span:nth-child(3){background:#27c93f}
+  .code-line{display:flex}
+  .code-num{color:#444;width:1.4rem;margin-right:1rem;user-select:none}
+  .c-kw{color:#c792ea}.c-fn{color:#82aaff}.c-str{color:var(--yellow)}.c-cm{color:#546e7a;font-style:italic}.c-wt{color:#eeffff}.c-op{color:#89ddff}
+
+  /* STATS */
+  .stats-bar{background:var(--black);border-top:1px solid var(--gray-lt);border-bottom:1px solid var(--gray-lt);display:flex;justify-content:center;padding:2.2rem 5%}
+  .stat-item{flex:1;text-align:center;padding:.5rem 1.5rem;border-right:1px solid var(--gray-lt)}
+  .stat-item:last-child{border-right:none}
+  .stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);color:var(--yellow);line-height:1}
+  .stat-label{font-size:.75rem;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem}
+
+  /* SECTIONS */
+  section{padding:100px 5%}
+  .section-label{display:flex;align-items:center;gap:.7rem;font-family:'Space Mono',monospace;font-size:.68rem;color:var(--yellow);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.2rem}
+  .section-label::before{content:'';width:28px;height:1.5px;background:var(--yellow)}
+  h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,5vw,4rem);color:#fff;line-height:1.05;letter-spacing:.03em}
+  h2 .accent{color:var(--yellow)}
+
+  /* SERVICES */
+  .services{background:var(--gray)}
+  .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5px;margin-top:4rem;background:var(--gray-lt);border:1px solid var(--gray-lt)}
+  .service-card{background:var(--gray-mid);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:background .25s}
+  .service-card::after{content:'';position:absolute;bottom:0;left:0;width:0;height:3px;background:var(--yellow);transition:width .35s ease}
+  .service-card:hover{background:#262626}
+  .service-card:hover::after{width:100%}
+  .service-icon{font-size:2rem;margin-bottom:1.2rem;display:block}
+  .service-card h3{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#fff;letter-spacing:.05em;margin-bottom:.7rem}
+  .service-card p{font-size:.88rem;color:var(--text-dim);line-height:1.7}
+  .service-tech{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem}
+  .tech-tag{font-family:'Space Mono',monospace;font-size:.62rem;background:rgba(245,196,0,.08);border:1px solid rgba(245,196,0,.2);color:var(--yellow);padding:.2rem .55rem;letter-spacing:.08em}
+
+  /* PROCESS */
+  .process{background:var(--black)}
+  .process-steps{margin-top:4rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem}
+  .step{position:relative;padding-top:1.5rem;border-top:2px solid var(--gray-lt);transition:border-color .2s}
+  .step:hover{border-color:var(--yellow)}
+  .step-num{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:rgba(245,196,0,.12);line-height:1;position:absolute;top:.3rem;right:0;transition:color .2s}
+  .step:hover .step-num{color:rgba(245,196,0,.22)}
+  .step h4{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;color:#fff;letter-spacing:.05em;margin-bottom:.5rem}
+  .step p{font-size:.84rem;color:var(--text-dim);line-height:1.65}
+
+  /* ABOUT */
+  .about{background:var(--gray);display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+  .about-text h2{margin-bottom:1.5rem}
+  .about-text p{color:var(--text-dim);line-height:1.8;margin-bottom:1rem;font-size:.95rem}
+  .about-perks{display:flex;flex-direction:column;gap:.7rem;margin-top:2rem}
+  .perk{display:flex;align-items:center;gap:.8rem;font-size:.88rem;color:var(--text)}
+  .perk::before{content:'▸';color:var(--yellow);font-size:1rem;flex-shrink:0}
+  .about-card-stack{display:flex;flex-direction:column;gap:1.2rem}
+  .skill-bar-card{background:var(--gray-mid);border:1px solid var(--gray-lt);padding:1.6rem 1.8rem}
+  .skill-bar-card h4{font-size:.78rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.12em;margin-bottom:1rem;font-family:'Space Mono',monospace}
+  .bar-item{margin-bottom:.9rem}
+  .bar-item:last-child{margin-bottom:0}
+  .bar-label{display:flex;justify-content:space-between;font-size:.82rem;color:var(--text);margin-bottom:.4rem}
+  .bar-label span{color:var(--yellow);font-family:'Space Mono',monospace;font-size:.75rem}
+  .bar-track{height:3px;background:var(--gray-lt)}
+  .bar-fill{height:100%;background:var(--yellow);transform-origin:left;animation:barGrow 1.2s cubic-bezier(.4,0,.2,1) both}
+  @keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+  /* PRICING */
+  .pricing{background:var(--black);text-align:center}
+  .pricing h2{margin-bottom:.8rem}
+  .pricing-sub{color:var(--text-dim);font-size:.95rem;margin-bottom:3.5rem}
+  .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;max-width:1000px;margin:0 auto}
+  .price-card{background:var(--gray-mid);border:1px solid var(--gray-lt);padding:2.5rem 2rem;text-align:left;position:relative;transition:border-color .25s,transform .25s}
+  .price-card:hover{border-color:var(--yellow);transform:translateY(-4px)}
+  .price-card.featured{border-color:var(--yellow);background:#222}
+  .price-badge{position:absolute;top:-1px;right:1.5rem;background:var(--yellow);color:var(--black);font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:.3rem .7rem;text-transform:uppercase}
+  .price-card h3{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#fff;letter-spacing:.06em;margin-bottom:.5rem}
+  .price-amount{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;color:var(--yellow);line-height:1;margin:.8rem 0 .3rem}
+  .price-amount sub{font-size:1rem;vertical-align:baseline;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-weight:400}
+  .price-period{font-size:.78rem;color:var(--text-dim);margin-bottom:1.8rem}
+  .price-features{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+  .price-features li{display:flex;align-items:flex-start;gap:.6rem;font-size:.86rem;color:var(--text)}
+  .price-features li::before{content:'✓';color:var(--yellow);font-weight:700;flex-shrink:0}
+  .price-card .btn-primary,.price-card .btn-ghost{width:100%;margin-top:2rem;text-align:center}
+
+  /* TESTIMONIALS */
+  .testimonials{background:var(--gray)}
+  .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3.5rem}
+  .testi-card{background:var(--gray-mid);border:1px solid var(--gray-lt);border-left:3px solid var(--yellow);padding:2rem}
+  .testi-quote{font-size:.92rem;color:var(--text-dim);line-height:1.8;margin-bottom:1.5rem;font-style:italic}
+  .testi-quote::before{content:'"';color:var(--yellow);font-size:1.5rem;font-family:'Bebas Neue'}
+  .testi-author{display:flex;align-items:center;gap:.8rem}
+  .testi-avatar{width:38px;height:38px;border-radius:50%;background:var(--gray-lt);border:2px solid var(--yellow);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;color:var(--yellow);font-size:1rem;flex-shrink:0}
+  .testi-name{font-weight:600;font-size:.88rem;color:#fff}
+  .testi-role{font-size:.75rem;color:var(--text-dim);font-family:'Space Mono',monospace}
+
+  /* CTA */
+  .cta-section{background:var(--black);text-align:center;padding:100px 5%;position:relative;overflow:hidden}
+  .cta-section::before{content:'DAGSOSOFT';position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,12vw,14rem);color:rgba(255,255,255,.02);letter-spacing:.05em;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+  .cta-section h2{font-size:clamp(2.2rem,6vw,5rem);margin-bottom:1rem;position:relative}
+  .cta-section p{color:var(--text-dim);max-width:540px;margin:0 auto 2.5rem;line-height:1.8;position:relative}
+  .cta-email{display:inline-block;font-family:'Space Mono',monospace;font-size:clamp(.72rem,2.5vw,.9rem);color:var(--yellow);text-decoration:none;border-bottom:1px solid rgba(245,196,0,.3);padding-bottom:.2rem;transition:border-color .2s;margin-bottom:2.5rem;position:relative;word-break:break-all}
+  .cta-email:hover{border-color:var(--yellow)}
+  .cta-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative}
+
+  /* FOOTER */
+  footer{background:var(--black);border-top:1px solid var(--gray-lt);padding:3rem 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.1em;color:#fff}
+  .footer-logo span{color:var(--yellow)}
+  .footer-copy{font-size:.78rem;color:var(--text-dim)}
+  .footer-links{display:flex;gap:1.5rem;list-style:none;flex-wrap:wrap}
+  .footer-links a{font-size:.78rem;color:var(--text-dim);text-decoration:none;transition:color .2s;letter-spacing:.08em}
+  .footer-links a:hover{color:var(--yellow)}
+
+  /* ANIMATIONS */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .65s ease,transform .65s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+
+  /* ══════════════════════════════════════
+     TABLET  ≤ 1024px
+  ══════════════════════════════════════ */
+  @media(max-width:1024px){
+    .nav-links,.nav-cta{display:none}
+    .hamburger{display:flex}
+    .mobile-menu{display:flex}
+
+    .hero{grid-template-columns:1fr;padding:100px 6% 70px;gap:2.5rem}
+    .hero-visual{justify-content:flex-start}
+    .code-card{max-width:100%}
+
+    .about{grid-template-columns:1fr;gap:3rem}
+
+    .stats-bar{flex-wrap:wrap;padding:0}
+    .stat-item{flex:1 1 45%;border-right:none;border-bottom:1px solid var(--gray-lt);padding:1.4rem 1rem}
+    .stat-item:nth-child(odd){border-right:1px solid var(--gray-lt)}
+    .stat-item:last-child{border-bottom:none}
+    .stat-item:nth-last-child(2):nth-child(odd){border-bottom:none}
+
+    section{padding:80px 6%}
+  }
+
+  /* ══════════════════════════════════════
+     MOBILE  ≤ 600px
+  ══════════════════════════════════════ */
+  @media(max-width:600px){
+    :root{--nav-h:58px}
+    nav{padding:0 5%}
+    .logo{font-size:1.45rem}
+
+    .hero{padding:84px 5% 55px;gap:2rem;min-height:auto}
+    h1{font-size:clamp(2.6rem,13vw,4rem)}
+    .hero-sub{font-size:.95rem}
+    .hero-actions{flex-direction:column}
+    .btn-primary,.btn-ghost{width:100%;text-align:center}
+    .code-card{font-size:.66rem;padding:1.3rem 1.1rem}
+
+    .stats-bar{flex-direction:column;padding:0}
+    .stat-item{flex:none;width:100%;border-right:none !important;border-bottom:1px solid var(--gray-lt);padding:1.3rem 5%}
+    .stat-item:last-child{border-bottom:none}
+
+    section{padding:60px 5%}
+    .services-grid{grid-template-columns:1fr}
+    .process-steps{grid-template-columns:1fr;gap:1.5rem}
+    .pricing-grid{grid-template-columns:1fr}
+    .price-card:hover{transform:none}
+    .testi-grid{grid-template-columns:1fr}
+
+    .cta-section{padding:70px 5%}
+    .cta-buttons{flex-direction:column;align-items:center}
+    .cta-buttons .btn-primary,.cta-buttons .btn-ghost{width:100%;max-width:360px;font-size:.9rem;padding:.9rem 1.5rem}
+
+    footer{flex-direction:column;align-items:flex-start;gap:1rem;padding:2.5rem 5%}
+    .footer-links{gap:1rem}
+    .section-label{font-size:.6rem}
+    .mobile-menu ul li a{font-size:1rem;padding:1rem 5%}
+  }
+
+  /* ══════════════════════════════════════
+     SMALL  ≤ 380px
+  ══════════════════════════════════════ */
+  @media(max-width:380px){
+    h1{font-size:clamp(2.2rem,14vw,3rem)}
+    .code-card{font-size:.58rem}
+    .stat-num{font-size:1.8rem}
+    .hero-tag{font-size:.6rem}
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curRing"></div>
+
+<!-- ══ NAV ══ -->
+<nav id="mainNav">
+  <div class="logo">DAGS<span>O</span>SOFT</div>
+  <ul class="nav-links">
+    <li><a href="#services">Usługi</a></li>
+    <li><a href="#process">Proces</a></li>
+    <li><a href="#about">O mnie</a></li>
+    <li><a href="#pricing">Oferta</a></li>
+    <li><a href="#contact">Kontakt</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Wycena projektu</button>
+  <button class="hamburger" id="hamburger" aria-label="Otwórz menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ══ MOBILE MENU ══ -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Menu nawigacyjne">
+  <button class="menu-close" id="menuClose" aria-label="Zamknij menu">&#x2715;</button>
+  <div class="mobile-menu-inner">
+    <ul>
+      <li><a href="#services" class="menu-link">Usługi</a></li>
+      <li><a href="#process"  class="menu-link">Proces</a></li>
+      <li><a href="#about"    class="menu-link">O mnie</a></li>
+      <li><a href="#pricing"  class="menu-link">Oferta</a></li>
+      <li><a href="#contact"  class="menu-link">Kontakt</a></li>
+    </ul>
+    <div class="mobile-menu-bottom">
+      <button class="btn-primary" onclick="closeMobileMenu();setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),300)">Wycena projektu →</button>
+      <div class="mobile-badge">PHP · LARAVEL · WORDPRESS · REACT · VUE</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-tag">Freelancer B2B · PHP Specialist</div>
+    <h1>KOD KTÓRY<br><span class="accent">ZARABIA</span><br><span class="outline">DLA CIEBIE</span></h1>
+    <p class="hero-sub">Tworzę zaawansowane aplikacje webowe i sklepy e-commerce. Specjalizuję się w PHP, Laravel, WordPress/WooCommerce i React — szybko, solidnie i ze zrozumieniem biznesu.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Porozmawiaj o projekcie</button>
+      <button class="btn-ghost" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Zobacz usługi ↓</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="code-card">
+      <div class="code-bar"><span></span><span></span><span></span></div>
+      <div style="margin-top:1.5rem">
+        <div class="code-line"><span class="code-num">1</span><span class="c-cm">// Dagsosoft · PHP Expert</span></div>
+        <div class="code-line"><span class="code-num">2</span>&nbsp;</div>
+        <div class="code-line"><span class="code-num">3</span><span class="c-kw">class </span><span class="c-fn">Developer</span></div>
+        <div class="code-line"><span class="code-num">4</span><span class="c-op">{</span></div>
+        <div class="code-line"><span class="code-num">5</span>&nbsp;&nbsp;<span class="c-kw">public </span><span class="c-fn">$skills</span><span class="c-op"> = [</span></div>
+        <div class="code-line"><span class="code-num">6</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'PHP 8'</span><span class="c-op">,</span></div>
+        <div class="code-line"><span class="code-num">7</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'Laravel'</span><span class="c-op">,</span></div>
+        <div class="code-line"><span class="code-num">8</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'WordPress'</span><span class="c-op">,</span></div>
+        <div class="code-line"><span class="code-num">9</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'WooCommerce'</span><span class="c-op">,</span></div>
+        <div class="code-line"><span class="code-num">10</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'React'</span><span class="c-op">,</span></div>
+        <div class="code-line"><span class="code-num">11</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-str">'Vue'</span><span class="c-op">,</span></div>
+        <div class="code-line"><span class="code-num">12</span>&nbsp;&nbsp;<span class="c-op">];</span></div>
+        <div class="code-line"><span class="code-num">13</span>&nbsp;</div>
+        <div class="code-line"><span class="code-num">14</span>&nbsp;&nbsp;<span class="c-fn">deliver</span><span class="c-op">(</span><span class="c-str">'quality'</span><span class="c-op">)</span></div>
+        <div class="code-line"><span class="code-num">15</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-op">-></span><span class="c-fn">onTime</span><span class="c-op">()</span></div>
+        <div class="code-line"><span class="code-num">16</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-op">-></span><span class="c-fn">withinBudget</span><span class="c-op">();</span></div>
+        <div class="code-line"><span class="code-num">17</span><span class="c-op">}</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats-bar">
+  <div class="stat-item reveal"><div class="stat-num">8+</div><div class="stat-label">Lat doświadczenia</div></div>
+  <div class="stat-item reveal"><div class="stat-num">120+</div><div class="stat-label">Projektów ukończonych</div></div>
+  <div class="stat-item reveal"><div class="stat-num">98%</div><div class="stat-label">Zadowolonych klientów</div></div>
+  <div class="stat-item reveal"><div class="stat-num">B2B</div><div class="stat-label">Faktura VAT / umowa</div></div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<section class="services" id="services">
+  <div class="section-label">Specjalizacje</div>
+  <h2>CO <span class="accent">ROBIĘ</span><br>DLA CIEBIE</h2>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-icon">⚡</span>
+      <h3>WordPress & WooCommerce</h3>
+      <p>Zaawansowane sklepy e-commerce, własne wtyczki, integracje z płatnościami i systemami ERP. Wydajność i bezpieczeństwo na pierwszym miejscu.</p>
+      <div class="service-tech"><span class="tech-tag">WordPress</span><span class="tech-tag">WooCommerce</span><span class="tech-tag">ACF</span><span class="tech-tag">REST API</span></div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🔧</span>
+      <h3>PHP Backend</h3>
+      <p>Solidny, skalowalny backend w czystym PHP lub z użyciem frameworków. API, systemy zarządzania, automatyzacja procesów biznesowych.</p>
+      <div class="service-tech"><span class="tech-tag">PHP 8</span><span class="tech-tag">MySQL</span><span class="tech-tag">REST API</span><span class="tech-tag">Composer</span></div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🚀</span>
+      <h3>Laravel</h3>
+      <p>Aplikacje SaaS, panele administracyjne, systemy rezerwacji i marketplace — zbudowane w Laravel z myślą o skalowalności i utrzymaniu.</p>
+      <div class="service-tech"><span class="tech-tag">Laravel 11</span><span class="tech-tag">Livewire</span><span class="tech-tag">Filament</span><span class="tech-tag">Queues</span></div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">⚛️</span>
+      <h3>React & Vue</h3>
+      <p>Nowoczesne SPA, dashboardy i interfejsy użytkownika zintegrowane z backendem PHP. Szybkie, responsywne i dostępne.</p>
+      <div class="service-tech"><span class="tech-tag">React 18</span><span class="tech-tag">Vue 3</span><span class="tech-tag">Inertia.js</span><span class="tech-tag">TypeScript</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══ -->
+<section class="process" id="process">
+  <div class="section-label">Jak działam</div>
+  <h2>PROSTY <span class="accent">PROCES</span><br>BEZ NIESPODZIANEK</h2>
+  <div class="process-steps">
+    <div class="step reveal"><div class="step-num">01</div><h4>Rozmowa & Brief</h4><p>Bezpłatne 30-minutowe spotkanie, na którym ustalam zakres, czas i budżet projektu.</p></div>
+    <div class="step reveal"><div class="step-num">02</div><h4>Wycena & Umowa</h4><p>Szczegółowa wycena i umowa B2B z jasno określonymi kamieniami milowymi.</p></div>
+    <div class="step reveal"><div class="step-num">03</div><h4>Development</h4><p>Iteracyjna praca z regularnymi aktualizacjami i dostępem do środowiska testowego.</p></div>
+    <div class="step reveal"><div class="step-num">04</div><h4>Wdrożenie & Support</h4><p>Wdrożenie na serwer produkcyjny i 30-dniowe wsparcie po starcie bez dodatkowych kosztów.</p></div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section class="about" id="about">
+  <div class="about-text reveal">
+    <div class="section-label">O mnie</div>
+    <h2>FREELANCER<br>Z <span class="accent">DUCHEM</span><br>FIRMY</h2>
+    <p>Jestem niezależnym programistą PHP z ponad 8-letnim doświadczeniem w budowaniu rozwiązań e-commerce i aplikacji webowych dla klientów z całej Europy.</p>
+    <p>Współpracuję wyłącznie w modelu B2B — wystawiam faktury VAT, podpisuję umowy i traktuję każdy projekt jak własny biznes.</p>
+    <div class="about-perks">
+      <div class="perk">Komunikacja w j. polskim i angielskim</div>
+      <div class="perk">Elastyczny czas pracy, w tym zdalna współpraca</div>
+      <div class="perk">Znajomość realiów polskiego rynku e-commerce</div>
+      <div class="perk">Code review i optymalizacja istniejących projektów</div>
+      <div class="perk">Utrzymanie i rozbudowa legacy code</div>
+    </div>
+  </div>
+  <div class="about-card-stack reveal">
+    <div class="skill-bar-card">
+      <h4>Poziom technologii</h4>
+      <div class="bar-item"><div class="bar-label">PHP / Laravel <span>95%</span></div><div class="bar-track"><div class="bar-fill" style="width:95%"></div></div></div>
+      <div class="bar-item"><div class="bar-label">WordPress / WooCommerce <span>98%</span></div><div class="bar-track"><div class="bar-fill" style="width:98%;animation-delay:.1s"></div></div></div>
+      <div class="bar-item"><div class="bar-label">React / Vue <span>80%</span></div><div class="bar-track"><div class="bar-fill" style="width:80%;animation-delay:.2s"></div></div></div>
+      <div class="bar-item"><div class="bar-label">MySQL / PostgreSQL <span>88%</span></div><div class="bar-track"><div class="bar-fill" style="width:88%;animation-delay:.3s"></div></div></div>
+    </div>
+    <div class="skill-bar-card">
+      <h4>Dostępność</h4>
+      <div class="bar-item"><div class="bar-label">Projekt stały (full-time) <span>✓</span></div><div class="bar-track"><div class="bar-fill" style="width:100%;animation-delay:.1s"></div></div></div>
+      <div class="bar-item"><div class="bar-label">Projekty jednorazowe <span>✓</span></div><div class="bar-track"><div class="bar-fill" style="width:100%;animation-delay:.2s"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ══ -->
+<section class="pricing" id="pricing">
+  <div class="section-label" style="justify-content:center">Oferta</div>
+  <h2>TRANSPARENTNE<br><span class="accent">CENY</span></h2>
+  <p class="pricing-sub">Wybierz model współpracy dopasowany do Twoich potrzeb</p>
+  <div class="pricing-grid">
+    <div class="price-card reveal">
+      <h3>Projekt Stały</h3>
+      <div class="price-amount">150<sub> zł/h</sub></div>
+      <div class="price-period">Minimum 20h / miesiąc</div>
+      <ul class="price-features">
+        <li>Dedykowane godziny miesięczne</li><li>Priorytetowa obsługa zgłoszeń</li><li>Raport godzinowy co tydzień</li><li>Faktura VAT</li><li>Umowa B2B</li>
+      </ul>
+      <button class="btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Zapytaj o szczegóły</button>
+    </div>
+    <div class="price-card featured reveal">
+      <div class="price-badge">Popularne</div>
+      <h3>Fixed Price</h3>
+      <div class="price-amount">od 3k<sub> zł</sub></div>
+      <div class="price-period">Wycena indywidualna projektu</div>
+      <ul class="price-features">
+        <li>Stała cena bez niespodzianek</li><li>Kamienie milowe i płatności etapowe</li><li>Środowisko testowe</li><li>30 dni bezpłatnego supportu</li><li>Pełny kod źródłowy</li><li>Faktura VAT + umowa</li>
+      </ul>
+      <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Wycena bezpłatna →</button>
+    </div>
+    <div class="price-card reveal">
+      <h3>Code Review</h3>
+      <div class="price-amount">500<sub> zł</sub></div>
+      <div class="price-period">Jednorazowo / projekt</div>
+      <ul class="price-features">
+        <li>Audyt bezpieczeństwa</li><li>Analiza wydajności</li><li>Raport z rekomendacjami</li><li>Konsultacja 1h w cenie</li><li>Faktura VAT</li>
+      </ul>
+      <button class="btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Zamów audyt</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="testimonials">
+  <div class="section-label">Opinie</div>
+  <h2>CO MÓWIĄ<br><span class="accent">KLIENCI</span></h2>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-quote">Współpraca na najwyższym poziomie. Sklep WooCommerce gotowy przed terminem, kod czysty i dobrze udokumentowany. Polecam każdemu, kto szuka solidnego PHP dewelopera B2B.</div>
+      <div class="testi-author"><div class="testi-avatar">MK</div><div><div class="testi-name">Marek Kowalski</div><div class="testi-role">CEO · e-commerce PL</div></div></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-quote">Aplikacja Laravel zbudowana od zera w 6 tygodni. Komunikacja świetna, wycena uczciwa, żadnych niespodzianek. Kontynuujemy współpracę.</div>
+      <div class="testi-author"><div class="testi-avatar">AW</div><div><div class="testi-name">Anna Wiśniewska</div><div class="testi-role">CTO · SaaS startup</div></div></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-quote">Migracja legacy systemu PHP do Laravel — sprawnie, bez przestojów. Kod review pokazał problemy, o których nie wiedzieliśmy. Bardzo merytoryczne podejście.</div>
+      <div class="testi-author"><div class="testi-avatar">PZ</div><div><div class="testi-name">Piotr Zając</div><div class="testi-role">Head of Dev · agencja digital</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section" id="contact">
+  <h2>ZACZNIJMY<br><span class="accent">PROJEKT</span></h2>
+  <p>Opisz swój projekt — odpiszę w ciągu 24h z wstępną oceną zakresu i budżetu. Bezpłatnie.</p>
+  <a href="mailto:kontakt@dagsosoft.pl" class="cta-email">📧 kontakt@dagsosoft.pl</a>
+  <div class="cta-buttons">
+    <button class="btn-primary" style="font-size:1rem;padding:1rem 2.5rem;">Wyślij brief projektu</button>
+    <button class="btn-ghost" style="font-size:1rem;padding:1rem 2.5rem;">Zaplanuj 30-min call</button>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-logo">DAGS<span>O</span>SOFT</div>
+  <div class="footer-copy">© 2025 Dagsosoft · Freelancer PHP B2B · NIP: PL0000000000</div>
+  <ul class="footer-links">
+    <li><a href="#services">Usługi</a></li>
+    <li><a href="#about">O mnie</a></li>
+    <li><a href="#contact">Kontakt</a></li>
+    <li><a href="#">Polityka prywatności</a></li>
+  </ul>
+</footer>
+
+<script>
+  /* ── HAMBURGER ── */
+  const hamburger  = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  function openMobileMenu(){
+    hamburger.classList.add('open');
+    mobileMenu.classList.add('open');
+    document.body.classList.add('menu-open');
+    hamburger.setAttribute('aria-expanded','true');
+  }
+  function closeMobileMenu(){
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.classList.remove('menu-open');
+    hamburger.setAttribute('aria-expanded','false');
+  }
+
+  document.getElementById('menuClose').addEventListener('click', closeMobileMenu);
+
+  hamburger.addEventListener('click',()=>{
+    hamburger.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
+  });
+
+  document.querySelectorAll('.menu-link').forEach(link=>{
+    link.addEventListener('click',e=>{
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      closeMobileMenu();
+      setTimeout(()=>{ if(target) target.scrollIntoView({behavior:'smooth'}); },320);
+    });
+  });
+
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeMobileMenu(); });
+
+  /* ── CURSOR ── */
+  const cur = document.getElementById('cur');
+  const curRing = document.getElementById('curRing');
+  if(cur && window.matchMedia('(pointer:fine)').matches){
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    (function animCursor(){
+      cur.style.transform=`translate(${mx-5}px,${my-5}px)`;
+      rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+      curRing.style.transform=`translate(${rx-18}px,${ry-18}px)`;
+      requestAnimationFrame(animCursor);
+    })();
+    document.querySelectorAll('button,a,.service-card,.price-card').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';curRing.style.opacity='1';});
+      el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curRing.style.opacity='.55';});
+    });
+  }
+
+  /* ── REVEAL ── */
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);} });
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(r=>io.observe(r));
+
+  /* ── NAV SCROLL ── */
+  window.addEventListener('scroll',()=>{
+    document.getElementById('mainNav').style.background =
+      window.scrollY>60 ? 'rgba(10,10,10,1)' : 'rgba(10,10,10,.96)';
+  });
+</script>
+</body>
+</html>

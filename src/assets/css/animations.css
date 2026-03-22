@@ -1,0 +1,51 @@
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes barGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.anim-fade-up {
+  animation: fadeUp 0.7s ease both;
+}
+
+.anim-fade-up-1 {
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+
+.anim-fade-up-2 {
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+.anim-fade-up-25 {
+  animation: fadeUp 0.7s 0.25s ease both;
+}
+
+.anim-fade-up-3 {
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--yellow);
+  transform-origin: left;
+  animation: barGrow 1.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.bar-fill-d1 { animation-delay: 0.1s; }
+.bar-fill-d2 { animation-delay: 0.2s; }
+.bar-fill-d3 { animation-delay: 0.3s; }
